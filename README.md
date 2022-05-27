@@ -1,3 +1,3 @@
 # tsp-optimization
 
-This repository was created to host a proposal to solve TSP.
+Repository to host the code and report for the final project of CiFO.
