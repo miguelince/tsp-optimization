@@ -99,7 +99,7 @@ def pareto_selection(population):
     based multiobjective GA's
     """
     # creates a fitness array for each individual of the population
-    fitness = np.array([i.get_fitness() for i in population])
+    fitness = np.array([i.fitness for i in population])
     # creates a new fitness array used for the calculations bellow
     fitness_calc = fitness.copy()
     # array for the flags of each individual
