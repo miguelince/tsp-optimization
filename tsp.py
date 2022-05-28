@@ -44,7 +44,7 @@ def import_data(file, single=True, metric=1):
         return twod_matrix
     
     
-matrix = import_data('distance_matrix.json')
+matrix = import_data('distance_matrix.json', single=False)
 
 
 #Fitness Single Objective
@@ -82,7 +82,8 @@ def get_neighbours(self):
 
 
 # Monkey patching
-Individual.get_fitness = get_fitness_single
+# Individual.get_fitness = get_fitness_single # single objective
+Individual.get_fitness = get_fitness_multi # multi objective
 Individual.get_neighbours = get_neighbours
 
 
@@ -97,11 +98,14 @@ optim="min",
 )
 pop.evolve(
     gens=100,
-    select=tournament,
+    select=pareto_selection,
     crossover=cycle_co,
     mutate=swap_mutation,
     co_p=0.9,
     mu_p=0.1,
-    elitism=True
+    elitism=True,
+    single = False, 
+    optimal_fitness = [0,0]
 )
+
 
