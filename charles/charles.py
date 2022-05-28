@@ -43,7 +43,6 @@ class Individual:
 
     def __repr__(self):
         return f"Individual(size={len(self.representation)}); Fitness: {self.fitness}"
-        #return f"Individual; {self.representation}; {self.fitness}"
 
 
 class Population:
@@ -66,7 +65,7 @@ class Population:
 
             if elitism == True:
                 if single==False:
-                    fitness_values = [individ.fitness for individ in self]
+                    fitness_values = [individ.fitness for individ in self.individuals]
                     pareto_points = pareto_front(fitness_values)
                     elites = np.array([], dtype = int)
                     for i, point in enumerate(pareto_points):
@@ -102,7 +101,7 @@ class Population:
             if elitism == True:
 
                 if single==False: # only for minimization
-                    fitness_values = [individ.fitness for individ in self]
+                    fitness_values = [i.fitness for i in self]
                     pareto_points = pareto_front(fitness_values)
                     for i, point in enumerate(pareto_points):
                         if len(elites) == 0:
@@ -126,11 +125,16 @@ class Population:
 
             if single == False:
                 # for minimization
-                fitness_values = [individ.get_fitness for individ in self]
+                fitness_values = [i.fitness for i in self]
                 distance_vector = np.array([])
                 for fit in fitness_values:
                     distance = np.linalg.norm(optimal_fitness - fit)
                     distance_vector = np.append(distance_vector, distance)
+                
+                if self.optim == "min":
+                    # prints the fitness of the individual closer to the origin
+                    print(f'Best Individual: {self[np.argmin(distance_vector)].fitness[0]} : {self[np.argmin(distance_vector)].fitness[1]}')
+                    
 
             else:
                 if self.optim == "max":
@@ -138,8 +142,6 @@ class Population:
                 elif self.optim == "min":
                     print(f'Best Individual: {min(self, key=attrgetter("fitness"))}')
             
-            # if gen == gens-1:
-            #     print(f'Best Individual is: {self.representation}')
                 
 
     def __len__(self):
