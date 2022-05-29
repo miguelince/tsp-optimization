@@ -87,7 +87,7 @@ Individual.get_fitness = get_fitness_multi # multi objective
 Individual.get_neighbours = get_neighbours
 
 
-# run multiple experiments - single objective
+# run experiments 
 
 pop = Population(
 size=20,
