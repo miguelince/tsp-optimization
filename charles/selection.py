@@ -92,14 +92,13 @@ def ranking(population):
     else:
         raise Exception("No optimization specified (min or max).")
 
-
 def pareto_selection(population):
     """Receives: Population
     Returns: Individual based on Bakers method for selection in Pareto
     based multiobjective GA's
     """
     # creates a fitness array for each individual of the population
-    fitness = np.array([i.fitness for i in population])
+    fitness = np.array([i.get_fitness() for i in population])
     # creates a new fitness array used for the calculations bellow
     fitness_calc = fitness.copy()
     # array for the flags of each individual
@@ -111,7 +110,7 @@ def pareto_selection(population):
         # points to be deleted after each iteration
         points_to_delete = np.array([], dtype=int)
         # calculating non_dominated points
-        pareto_points = pareto_front(fitness_calc)
+        pareto_points = pareto_front(fitness_calc, optim= population.optim)
 
         # iterating over those points
         for i, point in enumerate(pareto_points):
@@ -144,7 +143,7 @@ def pareto_selection(population):
             return individual
 
 
-def pareto_front(fitness):
+def pareto_front(fitness, optim = None):
     """Code inpired by Eyal Kazin
        Link: https://github.com/elzurdo/multi_objective_optimisation/blob/master/01_knapsack%202D_exhaustive.ipynb
 
@@ -172,8 +171,12 @@ def pareto_front(fitness):
             new_duration = new_fitness_array[1]
 
             #if any point dominates the previous point
-            if new_distance < distance and new_duration < duration:
+            if optim == 'min' and (new_distance < distance and new_duration < duration):
                 #it becomes dominated
+                is_pareto = False
+                pareto_front = np.append(pareto_front, 0)
+                break
+            if optim == 'max' and (new_distance > distance and new_duration > duration):
                 is_pareto = False
                 pareto_front = np.append(pareto_front, 0)
                 break
@@ -185,5 +188,4 @@ def pareto_front(fitness):
 
     #returns a list of 0 - dominated , 1 - non-dominated
     return pareto_front
-
 
