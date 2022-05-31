@@ -134,6 +134,9 @@ class Population:
                 if self.optim == "min":
                     # prints the fitness of the individual closer to the origin
                     print(f'Best Individual: {self[np.argmin(distance_vector)].fitness[0]} : {self[np.argmin(distance_vector)].fitness[1]}')
+                if self.optim == "max":
+                    # prints the fitness of the individual closer to the origin
+                    print(f'Best Individual: {self[np.argmax(distance_vector)].fitness[0]} : {self[np.argmax(distance_vector)].fitness[1]}')
                     
 
             else:
